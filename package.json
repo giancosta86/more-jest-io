@@ -1,0 +1,65 @@
+{
+  "name": "@giancosta86/more-jest-io",
+  "version": "1.0.0-rc.1",
+  "description": "TypeScript I/O matchers and utilities for Jest",
+  "keywords": [
+    "Jest",
+    "I/O",
+    "matchers",
+    "utilities",
+    "TypeScript"
+  ],
+  "homepage": "https://github.com/giancosta86/more-jest-io#readme",
+  "bugs": "https://github.com/giancosta86/more-jest-io/issues",
+  "license": "MIT",
+  "author": {
+    "name": "Gianluca Costa",
+    "email": "gianluca@gianlucacosta.info",
+    "url": "https://gianlucacosta.info/"
+  },
+  "files": [],
+  "main": "dist",
+  "types": "dist",
+  "repository": "giancosta86/more-jest-io",
+  "scripts": {
+    "clean": "rimraf dist coverage giancosta86-*.tgz",
+    "clean:all": "yarn clean && rimraf node_modules",
+    "format": "prettier --write .",
+    "check-all": "yarn check-format && yarn lint && yarn test",
+    "check-format": "prettier --check .",
+    "lint": "eslint . --ext .js,.ts,.jsx,.tsx,.cjs,.mjs",
+    "test": "jest",
+    "test:watch": "yarn test --watch",
+    "test:coverage": "yarn test --coverage",
+    "build": "yarn compile-ts",
+    "compile-ts": "tsc",
+    "prepack": "yarn check-all && yarn build && yarn test:prod",
+    "watch": "yarn compile-ts --watch",
+    "test:prod": "jest dist --testPathIgnorePatterns=/_.+"
+  },
+  "dependencies": {
+    "@giancosta86/more-jest": "^1.0.0-rc.5",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.2.218",
+    "@swc/jest": "^0.2.22",
+    "@types/jest": "^29.5.1",
+    "@types/node": "^16",
+    "@types/uuid": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.3",
+    "@typescript-eslint/parser": "^5.30.3",
+    "eslint": "^8.18.0",
+    "jest": "^29.5.0",
+    "jest-extended": "^3.2.3",
+    "prettier": "^2.7.1",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": ">=16.19.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
