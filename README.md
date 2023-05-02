@@ -54,6 +54,22 @@ In order to be able to access the custom matchers provided by this library withi
   });
   ```
 
+- `toExist()`: **asynchronous** matcher ensuring that a file system path exists. For example:
+
+  ```typescript
+  await expect(myPath).toExist();
+
+  await expect(inexistingPath).not.toExist();
+  ```
+
+- `toHaveStats(<predicate on Stats object>)`: **asynchronous** matcher ensuring that a file system path exists _and_ satisfies the given predicate about its `Stats`.
+
+  For example:
+
+  ```typescript
+  await expect(myPath).toHaveStats(stats => stats);
+  ```
+
 ## Utilities
 
 - `getSourceDirectory([callingScriptPath])`: given a script path - which may reside at any level under the `src` or the `dist` directory of a project - returns the path of its `src` directory.
