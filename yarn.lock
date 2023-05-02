@@ -331,10 +331,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.39.0.tgz#58b536bcc843f4cd1e02a7e6171da5c040f4d44b"
   integrity sha512-kf9RB0Fg7NZfap83B3QOqOGg9QmD9yBudqQXzzOtn3i4y7ZUXe5ONeW34Gwi+TxhH4mvj72R1Zc300KUMa9Bng==
 
-"@giancosta86/more-jest@^1.0.0-rc.5":
-  version "1.0.0-rc.5"
-  resolved "https://registry.yarnpkg.com/@giancosta86/more-jest/-/more-jest-1.0.0-rc.5.tgz#e2af34427519a6e23abc3719307c3b111b8f5a83"
-  integrity sha512-9nXL8OgYQncDvE5vtDDSRcwcH6XyqSAAnqru/NraPGM/weFhmukc35zxh94j/yABZND+5cd/AjDAzlmH218CLQ==
+"@giancosta86/more-jest@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@giancosta86/more-jest/-/more-jest-1.0.0.tgz#11087ae21454360ef3166040b8281b89ca7308d7"
+  integrity sha512-YeTqcSJ3eqoamzP+H/CUUpSLDQhWPV0aAVsii+mvUxKaQ6K21tyiWHNu8qmCqnAXnvzQ5QdIVqhZJ625loffbw==
 
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"

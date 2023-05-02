@@ -1,6 +1,6 @@
 {
   "name": "@giancosta86/more-jest-io",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "TypeScript I/O matchers and utilities for Jest",
   "keywords": [
     "Jest",
@@ -38,7 +38,7 @@
     "test:prod": "jest dist --testPathIgnorePatterns=/_.+"
   },
   "dependencies": {
-    "@giancosta86/more-jest": "^1.0.0-rc.5",
+    "@giancosta86/more-jest": "^1.0.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
