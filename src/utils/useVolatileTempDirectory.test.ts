@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { writeFile, stat } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 import { useVolatileTempDirectory } from "./useVolatileTempDirectory";
 
 describe("Volatile temporary directory", () => {
@@ -13,13 +13,12 @@ describe("Volatile temporary directory", () => {
 
       it("should enable file creation during a test...", async () => {
         await writeFile(tempFilePath, expectedTempFileContent);
-        const tempFileStats = await stat(tempFilePath);
 
-        expect(tempFileStats.isFile()).toBeTrue();
+        expect(tempFilePath).toExist();
       });
 
       it("...and should re-create the directory before the subsequent test", () =>
-        expect(() => stat(tempFilePath)).rejects.toThrow());
+        expect(tempFilePath).not.toExist());
     });
 
     describe("when requesting a shared directory", () => {
@@ -30,9 +29,8 @@ describe("Volatile temporary directory", () => {
 
       it("should enable file creation during a test...", async () => {
         await writeFile(tempFilePath, expectedTempFileContent);
-        const tempFileStats = await stat(tempFilePath);
 
-        expect(tempFileStats.isFile()).toBeTrue();
+        expect(tempFilePath).toExist();
       });
 
       it("...and should keep the files available for subsequent tests", () =>
