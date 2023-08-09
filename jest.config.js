@@ -5,9 +5,5 @@ module.exports = {
 
   testPathIgnorePatterns: ["<rootDir>/dist/", "/_.+"],
 
-  setupFilesAfterEnv: [
-    "jest-extended/all",
-    "@giancosta86/more-jest/dist/all",
-    "./src/all.ts"
-  ]
+  setupFilesAfterEnv: ["jest-extended/all", "./src/all.ts"]
 };
