@@ -6,19 +6,13 @@ _TypeScript I/O matchers and utilities for Jest_
 [![npm version](https://badge.fury.io/js/@giancosta86%2Fmore-jest-io.svg)](https://badge.fury.io/js/@giancosta86%2Fmore-jest-io)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](/LICENSE)
 
-**more-jest-io** is a TypeScript library - based on [more-jest](https://github.com/giancosta86/more-jest) - providing I/O matchers and utilities for Jest.
+**more-jest-io** is a TypeScript library providing I/O-related matchers and utilities for Jest.
 
 ## Installation
 
-```bash
-npm install @giancosta86/more-jest-io
-```
+The NPM package is:
 
-or
-
-```bash
-yarn add @giancosta86/more-jest-io
-```
+> @giancosta86/more-jest-io
 
 The public API entirely resides in the root package index, so one shouldn't reference specific modules from TypeScript code.
 
@@ -116,7 +110,3 @@ In order to be able to access the custom matchers provided by this library withi
   ```
 
   If you pass `{shared: true}`, the temporary directory will have the same lifecycle as its enclosing `describe` block, thus enabling file sharing between tests and sub-blocks in general.
-
-## Further references
-
-- [more-jest](https://github.com/giancosta86/more-jest) - TypeScript matchers and utilities for Jest
