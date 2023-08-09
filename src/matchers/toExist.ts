@@ -1,22 +1,33 @@
 import { stat } from "node:fs/promises";
-import { MatcherContext } from "expect";
-import { MatcherResult, matcherSuccess } from "@giancosta86/more-jest";
+
+async function pathExists(path: string): Promise<boolean> {
+  try {
+    await stat(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export async function toExist(
-  this: MatcherContext,
-  receivedPath: string
-): Promise<MatcherResult> {
-  try {
-    await stat(receivedPath);
-  } catch {
-    return {
-      pass: false,
-      message: () =>
-        `${this.utils.printReceived(
-          receivedPath
-        )} does not exist in the file system`
-    };
-  }
+  this: jest.MatcherContext,
+  actualPath: string
+): Promise<jest.CustomMatcherResult> {
+  const { matcherHint, printReceived } = this.utils;
 
-  return matcherSuccess;
+  const pass = await pathExists(actualPath);
+
+  return {
+    pass,
+    message: () =>
+      pass
+        ? matcherHint(".not.toExist", "received", "") +
+          "\n\n" +
+          "Expected path not to exist, received:\n" +
+          `  ${printReceived(actualPath)}`
+        : matcherHint(".toExist", "received", "") +
+          "\n\n" +
+          "Expected path to exist, received:\n" +
+          `  ${printReceived(actualPath)}`
+  };
 }

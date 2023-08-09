@@ -6,23 +6,17 @@ const distDirectoryName = "dist";
 const sourceDirectoryRegex = new RegExp(`^(.+?/${sourceDirectoryName})/`);
 const distDirectoryRegex = new RegExp(`^(.+?/${distDirectoryName})/`);
 
-export function getSourceDirectory(callingScriptPath?: string): string {
-  const actualCallingScriptPath =
-    callingScriptPath ?? expect.getState().testPath;
+function getDirectoryFromRegexAndPath(
+  directoryRegex: RegExp,
+  path: string
+): string | null {
+  const directoryMatch = directoryRegex.exec(path);
 
-  if (!actualCallingScriptPath) {
-    throw new Error("Cannot detect the path of the running script!");
+  if (!directoryMatch || !directoryMatch[1]) {
+    return null;
   }
 
-  const detectedSourceDirectory =
-    getSourceDirectoryFromPotentialSource(actualCallingScriptPath) ??
-    getSourceDirectoryFromPotentialCompiled(actualCallingScriptPath);
-
-  if (!detectedSourceDirectory) {
-    throw new Error(`Cannot detect the source directory for the given script!`);
-  }
-
-  return detectedSourceDirectory;
+  return directoryMatch[1];
 }
 
 function getSourceDirectoryFromPotentialSource(
@@ -44,15 +38,23 @@ function getSourceDirectoryFromPotentialCompiled(
     : null;
 }
 
-function getDirectoryFromRegexAndPath(
-  directoryRegex: RegExp,
-  path: string
-): string | null {
-  const directoryMatch = directoryRegex.exec(path);
+export function getSourceDirectory(runningScriptPath?: string): string {
+  const actualRunningScriptPath =
+    runningScriptPath ?? expect.getState().testPath;
 
-  if (!directoryMatch || !directoryMatch[1]) {
-    return null;
+  if (!actualRunningScriptPath) {
+    throw new Error("Cannot detect the path of the running script!");
   }
 
-  return directoryMatch[1];
+  const detectedSourceDirectory =
+    getSourceDirectoryFromPotentialSource(actualRunningScriptPath) ??
+    getSourceDirectoryFromPotentialCompiled(actualRunningScriptPath);
+
+  if (!detectedSourceDirectory) {
+    throw new Error(
+      `Cannot detect the source directory for the given running script!`
+    );
+  }
+
+  return detectedSourceDirectory;
 }

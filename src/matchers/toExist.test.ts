@@ -1,21 +1,49 @@
-describe("Expecting existence", () => {
-  describe("for this test script", () => {
-    it("should pass", () => expect(__filename).toExist());
+const matchingScenarios = [
+  {
+    description: "this test script",
+    path: __filename
+  }
+];
 
-    describe("upon negation", () => {
-      it("should fail", () =>
-        expect(expect(__filename).not.toExist()).rejects.toThrow());
-    });
-  });
+const nonMatchingScenarios = [
+  {
+    description: "inexisting file",
+    path: "<INEXISTING>"
+  }
+];
 
-  describe("for inexisting file", () => {
-    it("should fail", () =>
-      expect(expect("<INEXISTING>").toExist()).rejects.toThrow(
-        "does not exist in the file system"
-      ));
+describe(".toExist", () => {
+  it.each(matchingScenarios)(
+    "passes when given $description",
+    async ({ path }) => {
+      await expect(path).toExist();
+    }
+  );
 
-    describe("upon negation", () => {
-      it("should pass", () => expect("<INEXISTING>").not.toExist());
-    });
-  });
+  it.each(nonMatchingScenarios)(
+    "fails when given $description",
+    async ({ path }) => {
+      await expect(expect(path).toExist()).rejects.toThrow(
+        "Expected path to exist"
+      );
+    }
+  );
+});
+
+describe(".not.toExist", () => {
+  it.each(matchingScenarios)(
+    "fails when given $description",
+    async ({ path }) => {
+      await expect(expect(path).not.toExist()).rejects.toThrow(
+        "Expected path not to exist"
+      );
+    }
+  );
+
+  it.each(nonMatchingScenarios)(
+    "passes when given $description",
+    async ({ path }) => {
+      await expect(path).not.toExist();
+    }
+  );
 });

@@ -52,19 +52,12 @@ describe("Requesting the source directory", () => {
   describe("from a compiled script", () => {
     describe("right in the dist directory", () => {
       it("should infer the source directory", () =>
-        expect(getSourceDirectory("/a/b/c/dist/ciop.ts")).toBe("/a/b/c/src"));
+        expect(getSourceDirectory("/a/b/c/dist/ciop.js")).toBe("/a/b/c/src"));
     });
 
     describe("in a nested directory", () => {
       it("should infer the source directory", () =>
-        expect(getSourceDirectory("/a/b/c/dist/x/y/yogi.ts")).toBe(
-          "/a/b/c/src"
-        ));
-    });
-
-    describe("having .js extension", () => {
-      it("should infer the source directory", () =>
-        expect(getSourceDirectory("/a/b/c/dist/x/y/bubu.js")).toBe(
+        expect(getSourceDirectory("/a/b/c/dist/x/y/yogi.js")).toBe(
           "/a/b/c/src"
         ));
     });
@@ -73,7 +66,7 @@ describe("Requesting the source directory", () => {
   describe("from a script neither in the source nor in the dist directory", () => {
     it("should throw", () =>
       expect(() => getSourceDirectory("/a/b/c/ciop.ts")).toThrow(
-        "Cannot detect the source directory for the given script!"
+        "Cannot detect the source directory for the given running script!"
       ));
   });
 

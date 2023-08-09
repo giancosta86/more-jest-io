@@ -1,30 +1,34 @@
-import { Stats } from "node:fs";
 import { stat } from "node:fs/promises";
-import { MatcherContext } from "expect";
-import { MatcherResult, failMatcherIf } from "@giancosta86/more-jest";
+
+async function hasStats(statsPredicate: StatsPredicate, path: string) {
+  try {
+    const pathStats = await stat(path);
+    return statsPredicate(pathStats);
+  } catch {
+    return false;
+  }
+}
 
 export async function toHaveStats(
-  this: MatcherContext,
-  receivedPath: string,
+  this: jest.MatcherContext,
+  actualPath: string,
   statsPredicate: StatsPredicate
-): Promise<MatcherResult> {
-  let pathStats: Stats;
+): Promise<jest.CustomMatcherResult> {
+  const { matcherHint, printReceived } = this.utils;
 
-  try {
-    pathStats = await stat(receivedPath);
-  } catch {
-    return {
-      pass: false,
-      message: () =>
-        `${this.utils.printReceived(
-          receivedPath
-        )} does not exist in the file system`
-    };
-  }
+  const pass = await hasStats(statsPredicate, actualPath);
 
-  return failMatcherIf(
-    !statsPredicate(pathStats),
-    () =>
-      `Failed stats predicate for ${this.utils.printReceived(receivedPath)}\n\n`
-  );
+  return {
+    pass,
+    message: () =>
+      pass
+        ? matcherHint(".not.toHaveStats", "received", "") +
+          "\n\n" +
+          "Expected path not to satisfy the given predicate, received:\n" +
+          `  ${printReceived(actualPath)}`
+        : matcherHint(".toHaveStats", "received", "") +
+          "\n\n" +
+          "Expected path to satisfy the given predicate, received:\n" +
+          `  ${printReceived(actualPath)}`
+  };
 }

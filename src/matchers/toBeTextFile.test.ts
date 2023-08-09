@@ -1,35 +1,71 @@
 import { join } from "node:path";
 import { getSourceDirectory } from "../utils";
 
-describe("Expecting text file content", () => {
+const scenarios = [
+  {
+    encoding: "utf8" as BufferEncoding,
+    expectedText: "Alpha\nBeta"
+  },
+
+  {
+    encoding: "latin1" as BufferEncoding,
+    expectedText: "Je préférérais une fenêtre."
+  }
+];
+
+function getEncodedTestFilePath(encoding: string): string {
   const testDirectory = join(getSourceDirectory(), "test");
+  return join(testDirectory, `${encoding}.txt`);
+}
 
-  describe("in UTF-8 encoding", () => {
-    const testFilePath = join(testDirectory, "utf8.txt");
-    const expectedContent = "Alpha\nBeta";
+describe(".toBeTextFile", () => {
+  it.each(scenarios)(
+    "passes when comparing $encoding-encoded file with matching content",
+    async ({ encoding, expectedText }) => {
+      const testFilePath = getEncodedTestFilePath(encoding);
 
-    describe("when expecting the real content", () => {
-      it("should pass", () =>
-        expect(testFilePath).toBeTextFile(expectedContent));
-    });
+      await expect(testFilePath).toBeTextFile(expectedText, {
+        encoding
+      });
+    }
+  );
 
-    describe("when expecting some different content", () => {
-      it("should fail", () =>
-        expect(
-          expect(testFilePath).toBeTextFile("<SOMETHING ELSE>")
-        ).rejects.toThrow("Expected text content for file"));
-    });
-  });
+  it.each(scenarios)(
+    "fails when comparing $encoding-encoded file with inexisting content",
+    async ({ encoding }) => {
+      const testFilePath = getEncodedTestFilePath(encoding);
 
-  describe("in Latin-1 encoding", () => {
-    const testFilePath = join(testDirectory, "latin1.txt");
-    const expectedContent = "Je préférérais une fenêtre.";
+      await expect(
+        expect(testFilePath).toBeTextFile("<<INEXISTING>>", {
+          encoding
+        })
+      ).rejects.toThrow("Expected to find the given text in path");
+    }
+  );
+});
 
-    describe("when expecting the real content", () => {
-      it("should pass", () =>
-        expect(testFilePath).toBeTextFile(expectedContent, {
-          encoding: "latin1"
-        }));
-    });
-  });
+describe(".not.toBeTextFile", () => {
+  it.each(scenarios)(
+    "fails when comparing $encoding-encoded file with its content",
+    async ({ expectedText, encoding }) => {
+      const testFilePath = getEncodedTestFilePath(encoding);
+
+      await expect(
+        expect(testFilePath).not.toBeTextFile(expectedText, {
+          encoding
+        })
+      ).rejects.toThrow("Expected not to find the given text in path");
+    }
+  );
+
+  it.each(scenarios)(
+    "passes when comparing $encoding-encoded file with inexisting content",
+    async ({ encoding }) => {
+      const testFilePath = getEncodedTestFilePath(encoding);
+
+      await expect(testFilePath).not.toBeTextFile("<<IMPOSSIBLE>>", {
+        encoding
+      });
+    }
+  );
 });
